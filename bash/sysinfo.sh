@@ -8,13 +8,13 @@ echo "FQDN: $(hostname --fqdn)"
 echo "Hostname: $(hostname)"
 
 # Display Host information
-echo "Host Information:"
+echo "Host Information:" #print host label
 echo "$(hostnamectl)"
 
 # Display the IP Address of the system
-echo "IP Addresses:"
+echo "IP Addresses:" #print IP label
 echo "$(hostname -I)"
 
 # Display Root Filesystem Status
-echo "Root Filesystem Status:"
-echo "$(df -h /)"
+echo "Root Filesystem Status:" #print root filesystem label
+echo "$(df -h /)" #print df in human readable format listed
