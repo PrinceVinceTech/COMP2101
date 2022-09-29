@@ -1,4 +1,5 @@
 #!/bin/bash
-echo Hello World!
+# My first script - helloworld.sh updated from the prep lab
 
-exit
+echo 'Hello World!'
+echo "I am process # $$"
