@@ -59,8 +59,8 @@ echo "$COMPIP COMP2101-S22" | sudo tee -a /etc/hosts
 # update quiet flag to -qq to suppress output
 lxc exec COMP2101-S22 -- apt update -qq
 
-# install apache2 if not already installed
-lxc exec COMP2101-S22 -- apt install apache2 -y
+# install apache2 quietly and yes to all prompts
+lxc exec COMP2101-S22 -- apt install apache2 -qqy
 
 # if apache2 is installed then start it
 lxc exec COMP2101-S22 -- systemctl start apache2
