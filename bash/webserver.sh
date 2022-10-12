@@ -36,3 +36,11 @@ fi
 # we will call the server container COMP2101-S22 
 # launch lxd container 
 lxc launch ubuntu:20.04 COMP2101-S22
+
+# test stop and remove instance of COMP2101-S22
+#lxc stop COMP2101-S22
+#lxc delete COMP2101-S22
+#lxc list
+
+# list all available containers
+lxc list
