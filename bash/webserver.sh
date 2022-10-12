@@ -53,8 +53,10 @@ echo "The IP address of the container is $COMPIP"
 echo "$COMPIP COMP2101-S22" | sudo tee -a /etc/hosts
 
 # install apache2 on the container if not already installed
-lxc exec COMP2101-S22 -- apt update
-lxc exec COMP2101-S22 -- apt install apache2 -y
+# update quiet flag to -qq to suppress output
+lxc exec COMP2101-S22 -- apt update -qq
+# install apache2 if not already installed
+lxc exec COMP2101-S22 -- apt install apache2 -qq
 
 # if apache2 is installed then start it
 lxc exec COMP2101-S22 -- systemctl start apache2
@@ -64,7 +66,7 @@ wget http://COMP2101-S22
 
 # if you can access COMP2101-S22 echo success message
 if [ $? -eq 0 ]; then
-    echo "You can access COMP2101-S22 from this container"
+    echo "Congratulations! You can access COMP2101-S22. :)"
 else
-    echo "You cannot access COMP2101-S22 from this container"
+    echo "Sorry, you cannot access COMP2101-S22 from this container :("
 fi
