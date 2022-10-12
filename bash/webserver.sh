@@ -44,3 +44,27 @@ lxc launch ubuntu:20.04 COMP2101-S22
 
 # list all available containers
 lxc list
+
+# this is to get the IP address of COMP2101-S22 and store it in a variable
+COMPIP=$(lxc list COMP2101-S22 -c 4 --format csv)
+echo "The IP address of the container is $COMPIP"
+
+#this is to get COMPIP and add it to etc/hosts for COMP2101-S22
+echo "$COMPIP COMP2101-S22" | sudo tee -a /etc/hosts
+
+# install apache2 on the container if not already installed
+lxc exec COMP2101-S22 -- apt update
+lxc exec COMP2101-S22 -- apt install apache2 -y
+
+# if apache2 is installed then start it
+lxc exec COMP2101-S22 -- systemctl start apache2
+
+# check if you can access COMP2101-S22 from the host
+wget http://COMP2101-S22
+
+# if you can access COMP2101-S22 echo success message
+if [ $? -eq 0 ]; then
+    echo "You can access COMP2101-S22 from this container"
+else
+    echo "You cannot access COMP2101-S22 from this container"
+fi
