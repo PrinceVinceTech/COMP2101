@@ -53,7 +53,7 @@ compIP=$(lxc list | grep COMP2101-S22 | awk '{print$6}')
 echo "The IP address of the container is $compIP"
 
 #this is to get COMPIP and add it to etc/hosts for COMP2101-S22
-echo "$compIP   COMP2101-S22" | sudo tee -a /etc/hosts
+echo "$compIP COMP2101-S22" | sudo tee -a /etc/hosts
 
 # install apache2 on the container if not already installed
 # update quiet flag to -qq to suppress output
@@ -75,21 +75,4 @@ if [ $? -eq 0 ]; then
 else
     echo "Sorry, you cannot access COMP2101-S22 from this container :("
     exit 1
-    # if you cannot access COMP2101-S22 install curl
-    if [ $? -eq 1 ]; then
-        echo "Curl is not installed, installing now."
-        sudo apt install curl -qqy
-        # if curl is installed then try to access COMP2101-S22 again
-        if [ $? -eq 0 ]; then
-            curl http://COMP2101-S22
-            # if you can access COMP2101-S22 echo success message
-            if [ $? -eq 0 ]; then
-                echo "Congratulations! You can access COMP2101-S22. :)"
-                exit 0                                             
-            else
-                echo "Sorry, you cannot access COMP2101-S22 ask Amir (200493059) to check his script! :'("
-                exit 1
-            fi
-        fi
-    fi
-fi  
+fi
