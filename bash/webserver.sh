@@ -37,7 +37,7 @@ fi
 # launch lxd container 
 lxc launch ubuntu:20.04 COMP2101-S22
 
-# wait for the container to start
+# wait for the container to start just to make sure it is ready
 echo "Waiting for container to start"
 sleep 5
 # test stop and remove instance of COMP2101-S22
@@ -66,7 +66,7 @@ lxc exec COMP2101-S22 -- apt install apache2 -qqy
 lxc exec COMP2101-S22 -- systemctl start apache2
 
 # check if you can access COMP2101-S22 from the host
-wget http://COMP2101-S22
+curl http://COMP2101-S22
 
 # if you can access COMP2101-S22 echo success message
 if [ $? -eq 0 ]; then
