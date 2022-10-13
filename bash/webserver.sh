@@ -75,4 +75,21 @@ if [ $? -eq 0 ]; then
 else
     echo "Sorry, you cannot access COMP2101-S22 from this container :("
     exit 1
-fi
+    # if you cannot access COMP2101-S22 install curl
+    if [ $? -ne 0 ]; then
+        echo "Curl is not installed, installing now."
+        lxc exec COMP2101-S22 -- apt install curl -qqy
+        # if curl is installed then try to access COMP2101-S22 again
+        if [ $? -eq 0 ]; then
+            curl http://COMP2101-S22
+            # if you can access COMP2101-S22 echo success message
+            if [ $? -eq 0 ]; then
+                echo "Congratulations! You can access COMP2101-S22. :)"
+                exit 0
+            else
+                echo "Sorry, you cannot access COMP2101-S22 from this container :("
+                exit 1
+            fi
+        fi
+    fi
+fi  
