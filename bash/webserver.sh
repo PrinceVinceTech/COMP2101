@@ -49,11 +49,11 @@ sleep 5
 lxc list
 
 # this is to get the IP address of COMP2101-S22 and store it in a variable
-COMPIP=$(lxc list COMP2101-S22 -c 4 --format csv)
-echo "The IP address of the container is $COMPIP"
+compIP=$(lxc list | grep COMP2101-S22 | awk '{print$6}')
+echo "The IP address of the container is $compIP"
 
 #this is to get COMPIP and add it to etc/hosts for COMP2101-S22
-echo "$COMPIP COMP2101-S22" | sudo tee -a /etc/hosts
+echo "$compIP   COMP2101-S22" | sudo tee -a /etc/hosts
 
 # install apache2 on the container if not already installed
 # update quiet flag to -qq to suppress output
