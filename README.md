@@ -9,3 +9,8 @@ Added helloworld scripts and systeminfo script
 
 ## Added arithmetic-demo, getpics.sh, improveddice.sh
 Added test scripts for Lab 2
+
+## Finished Lab 3
+Added scripts for LXD installation and container creation
+Installed Apache
+uploaded screenshots
