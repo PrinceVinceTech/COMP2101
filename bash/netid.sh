@@ -29,6 +29,17 @@
 
 # TASK 1: While loop here to accept options on the command line
 
+while [ $# -gt 0 ]; do
+  case $1 in
+    -v | --verbose )
+      verbose="yes"
+      ;;
+    * )
+      interface="$1"
+      ;;
+  esac
+  shift
+done
 
 #####
 # Once per host report
