@@ -103,7 +103,9 @@ EOF
 
 #loop through the interfaceList array and print the information for each interface in the array
 #increase the counter by 1 each time the loop runs
-for ((i=0; i<${#interfaceList[@]}; i++)); do
+for interface in ${interfaceList[@]}; do
+  #test what number of interface it is:
+  #echo $interfaceList[@]
   [ "$verbose" = "yes" ] && echo "Reporting on interface(s): $interface"
   [ "$verbose" = "yes" ] && echo "Getting IPV4 address and name for interface $interface"
   # Find an address and hostname for the interface being summarized
@@ -117,16 +119,16 @@ for ((i=0; i<${#interfaceList[@]}; i++)); do
   network_number=$(cut -d / -f 1 <<<"$network_address")
   network_name=$(getent networks $network_number|awk '{print $1}')
 
-  cat <<EOF
-  
-  Interface $interface[@]:
-  ===============
-  Address         : $ipv4_address
-  Name            : $ipv4_hostname
-  Network Address : $network_address
-  Network Name    : $network_name
-  
-  EOF
+cat <<EOF
+
+Interface $interface
+===============
+Address         : $ipv4_address
+Name            : $ipv4_hostname
+Network Address : $network_address
+Network Name    : $network_name
+
+EOF
 done
 #####
 # End of per-interface report
