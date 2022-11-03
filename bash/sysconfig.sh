@@ -15,18 +15,19 @@
 # Usage:
 #   error-message ["some text to print to stderr"]
 function error-message {
-
+  echo "$@" >&2
 }
 
 # This function will send a message to stderr and exit with a failure status
 # Usage:
 #   error-exit ["some text to print to stderr" [exit-status]]
 function error-exit {
-
+  error-message "$@"
+  exit "${2:-1}"
 }
 #This function displays help information if the user asks for it on the command line or gives us a bad command line
 function displayhelp {
-
+  echo "Usage:$0 [-h | --help]"
 }
 
 # This function will remove all the temp files created by the script
@@ -98,26 +99,26 @@ sudo lshw -class bus >/tmp/businfo.$$ 2>/dev/null
 sudo lshw -class cpu >/tmp/cpuinfo.$$ 2>/dev/null
 
 # extract the specific data items into variables
-systemproduct=`sed -n '/product:/s/ *product: //p' /tmp/sysinfo.$$`
-systemwidth=`sed -n '/width:/s/ *width: //p' /tmp/sysinfo.$$`
-systemmotherboard=`sed -n '/product:/s/ *product: //p' /tmp/businfo.$$|head -1`
-systembiosvendor=`sed -n '/vendor:/s/ *vendor: //p' /tmp/memoryinfo.$$|head -1`
-systembiosversion=`sed -n '/version:/s/ *version: //p' /tmp/memoryinfo.$$|head -1`
-systemcpuvendor=`sed -n '/vendor:/s/ *vendor: //p' /tmp/cpuinfo.$$|head -1`
-systemcpuproduct=`sed -n '/product:/s/ *product: //p' /tmp/cpuinfo.$$|head -1`
-systemcpuspeed=`sed -n '/size:/s/ *size: //p' /tmp/cpuinfo.$$|head -1`
-systemcpucores=`sed -n '/configuration:/s/ *configuration:.*cores=//p' /tmp/cpuinfo.$$|head -1`
+systemproduct='sed -n '/product:/s/ *product: //p' /tmp/sysinfo.$$'
+systemwidth='sed -n '/width:/s/ *width: //p' /tmp/sysinfo.$$'
+systemmotherboard='sed -n '/product:/s/ *product: //p' /tmp/businfo.$$|head -1'
+systembiosvendor='sed -n '/vendor:/s/ *vendor: //p' /tmp/memoryinfo.$$|head -1'
+systembiosversion='sed -n '/version:/s/ *version: //p' /tmp/memoryinfo.$$|head -1'
+systemcpuvendor='sed -n '/vendor:/s/ *vendor: //p' /tmp/cpuinfo.$$|head -1'
+systemcpuproduct='sed -n '/product:/s/ *product: //p' /tmp/cpuinfo.$$|head -1'
+systemcpuspeed='sed -n '/size:/s/ *size: //p' /tmp/cpuinfo.$$|head -1'
+systemcpucores='sed -n '/configuration:/s/ *configuration:.*cores=//p' /tmp/cpuinfo.$$|head -1'
 
 # gather the remaining data needed
-sysname=`hostname`
-domainname=`hostname -d`
-osname=`sed -n -e '/^NAME=/s/^NAME="\(.*\)"$/\1/p' /etc/os-release`
-osversion=`sed -n -e '/^VERSION=/s/^VERSION="\(.*\)"$/\1/p' /etc/os-release`
-memoryinfo=`sudo lshw -class memory|sed -e 1,/bank/d -e '/cache/,$d' |egrep 'size|description'|grep -v empty`
-ipinfo=`getipinfo`
-diskusage=`df -h -t ext4`
-printerlist="`lpstat -e`
-Default printer: `lpstat -d|cut -d : -f 2`"
+sysname='hostname'
+domainname='hostname -d'
+osname='sed -n -e '/^NAME=/s/^NAME="\(.*\)"$/\1/p' /etc/os-release'
+osversion='sed -n -e '/^VERSION=/s/^VERSION="\(.*\)"$/\1/p' /etc/os-release'
+memoryinfo='sudo lshw -class memory|sed -e 1,/bank/d -e '/cache/,$d' |egrep 'size|description'|grep -v empty'
+ipinfo='getipinfo'
+diskusage='df -h -t ext4'
+printerlist="'lpstat -e'
+Default printer: 'lpstat -d|cut -d : -f 2'"
 
 # create output
 

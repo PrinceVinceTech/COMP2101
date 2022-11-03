@@ -14,7 +14,8 @@
 ##############
 # Define functions for error messages and displaying command line help.
 function displayusage {
-  echo "Usage:$0 [-h | --help]"
+  echo "Usage:$0 [-h | --help]"# Define functions for error messages and displaying command line help.
+
 }
 function errormessage {
   echo "$@" >&2
