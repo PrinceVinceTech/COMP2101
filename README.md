@@ -14,3 +14,6 @@ Added test scripts for Lab 2
 Added scripts for LXD installation and container creation
 Installed Apache
 uploaded screenshots
+
+## Finished Lab 4
+Added screenshots and modified lab 4 script for netid.sh
