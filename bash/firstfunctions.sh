@@ -26,6 +26,9 @@ function errormessage {
 # Process the command line options, saving the results in variables for later use.
 while [ $# -gt 0 ]; do
   case "$1" in
+    -v | --verbose )
+      verbose="yes"
+      ;;
     -h|--help)
       displayusage
       exit 0
