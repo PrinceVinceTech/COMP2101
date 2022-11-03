@@ -20,19 +20,14 @@
 #         Your script must allow the user to specify both verbose mode and an interface name if they want
 # TASK 2: Dynamically identify the list of interface names for the computer running the script, and use a for loop to generate the report for every interface except loopback - do not include loopback network information in your output
 
-################
-# Data Gathering
-################
-# the first part is run once to get information about the host
-# grep is used to filter ip command output so we don't have extra junk in our output
-# stream editing with sed and awk are used to extract only the data we want displayed
 
-# TASK 1: While loop here to accept options on the command line
-
+# Accept options on the command line for verbose mode and an interface name - using while loop and case command
 while [ $# -gt 0 ]; do
-  case $1 in
+  case "$1" in
     -v | --verbose )
       verbose="yes"
+        #test value of verbose
+        #echo $verbose
       ;;
     * )
       interface="$1"
@@ -40,6 +35,26 @@ while [ $# -gt 0 ]; do
   esac
   shift
 done
+
+# Dynamically identify the list of interface names for the computer running the script, and use a for loop to generate the report for every interface except loopback - do not include loopback network information in your output
+# identify the list of interface names for the computer running the script
+# remove loopback with grep
+interfaces=$(ip a | awk -F': ' '/^[0-9]: / {print $2}' | grep -v lo)
+#echo "interfaces: $interfaces" remove when testing is complete
+
+#create an empty arrayvariable for interface List and list them on a for loop
+interfaceList=()
+for interface in $interfaces; do
+  interfaceList+=("$interface")
+done
+echo "Your interfaces are: ${interfaceList[@]}"
+
+################
+# Data Gathering
+################
+# the first part is run once to get information about the host
+# grep is used to filter ip command output so we don't have extra junk in our output
+# stream editing with sed and awk are used to extract only the data we want displayed
 
 #####
 # Once per host report
@@ -67,6 +82,7 @@ Hostname      : $my_hostname
 Default Router: $default_router_address
 Router Name   : $default_router_name
 External IP   : $external_address
+
 External Name : $external_name
 
 EOF
@@ -85,8 +101,10 @@ EOF
 # Per-interface report
 #####
 
+#loop through the interfaceList array and print the information for each interface in the array
+
 # define the interface being summarized
-interface="enp0s3"
+#interface="eno1" #remove on testing
 [ "$verbose" = "yes" ] && echo "Reporting on interface(s): $interface"
 
 [ "$verbose" = "yes" ] && echo "Getting IPV4 address and name for interface $interface"
