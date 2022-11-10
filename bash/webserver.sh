@@ -32,10 +32,24 @@ if [ $? -ne 0 ]; then
     fi
 fi
 
+# check if container exists
+lxc list | grep -w COMP2101-S22
+
+# if container exist proceed to next step
+if [ $? -eq 0 ]; then
+    echo "Container exists, starting now."
+    lxc start COMP2101-S22
+    if [ $? -ne 0 ]; then
+        #launch container and create
+        lxc launch ubuntu:20.04 COMP2101-S22
+    fi
+fi
+# if container does not exist, create it
+
 # next step is to create a container for Ubuntu 20.04 which is the current LTS and installed on the host
 # we will call the server container COMP2101-S22 
 # launch lxd container 
-lxc launch ubuntu:20.04 COMP2101-S22
+#lxc launch ubuntu:20.04 COMP2101-S22
 
 # wait for the container to start just to make sure it is ready
 echo "Waiting for container to start"
@@ -53,7 +67,15 @@ compIP=$(lxc list | grep COMP2101-S22 | awk '{print$6}')
 echo "The IP address of the container is $compIP"
 
 #this is to get COMPIP and add it to etc/hosts for COMP2101-S22
-echo "$compIP COMP2101-S22" | sudo tee -a /etc/hosts
+#check if COMP2101-S22 is in /etc/hosts
+cat /etc/hosts | grep -q COMP2101-S22
+
+if [ $? -eq 0 ]; then
+    echo "COMP2101-S22 is  already in your /etc/hosts"
+else
+    echo "COMP2101-S22 is not in /etc/hosts, adding it now"
+    echo "$compIP COMP2101-S22" | sudo tee -a /etc/hosts
+fi
 
 # install apache2 on the container if not already installed
 # update quiet flag to -qq to suppress output
