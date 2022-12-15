@@ -1,12 +1,16 @@
 
-#create a system information report about the current system
+#create a system information report about the current system in a function
+function hardwareDescription {
+    "Hardware Description"
+    "--------------------"
+    $hardWdescription = Get-CIMInstance Win32_ComputerSystem
+    $hardWdescription | Format-Table *
+    
+}
 "System Information Report"
 "========================="
 
-"Hardware Description"
-"--------------------"
-$hardWdescription = Get-CIMInstance Win32_ComputerSystem
-$hardWdescription | Format-Table *
+hardwareDescription
 
 "Operating System"
 "----------------"
@@ -50,4 +54,9 @@ foreach ($disk in $diskInfo) {
 $networkInfo = adapters.ps1
 $networkInfo
 
-#create a report for videocard vendor, description, and memory size
+#create a report for videocard vendor, description, screen resolution in horizontal and vertical pixels (win32_videocontroller)
+"Video Information"
+"---------------"
+$videoInfo = Get-CIMInstance Win32_VideoController
+$videoInfo | Format-Table Name, Description, CurrentHorizontalResolution "
+x" CurrentVerticalResolution
