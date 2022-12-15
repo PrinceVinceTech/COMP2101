@@ -1,45 +1,3 @@
-#environment variable to COMP2101
-$env:Path = "$env:Path;C:\Users\Amir\Documents\Github\COMP2101\powershell"
-
-#function for mydisks
-function get-mydisks {
-    Get-Disk | Format-Table Manufacturer,Model,SerialNumber,FirmwareVersion,Size
-}
-
-#get-todays date
-$userDay = (Get-Date).DayOfWeek
-
-#create a function with welcome message
-function welcome {
-    "Welcome Amir, hope you're having a great $userDay!"
-}
-
-#new alias np for notepad
-New-Item -Path Alias:np -Value notepad | Out-Null
-Get-Alias np | Out-Null
-
-#functions for system information must accept parameters to filter the output on the command line
-
-#system displays cpu, os, ram and video reports only
-# Parameter help description
-param (
-    [Parameter(Mandatory=$true, HelpMessage="Displays CPU information")]
-    [switch]$cpu,
-    [Parameter(Mandatory=$true, HelpMessage="Displays OS information")]
-    [switch]$os,
-    [Parameter(Mandatory=$true, HelpMessage="Displays RAM information")]
-    [switch]$ram,
-    [Parameter(Mandatory=$true, HelpMessage="Displays Video information")]
-    [switch]$video
-)
-
-function get-networkadapter {
-    #create script for network adapter report using Get-CimInstance Win32_NetworkAdapterConfiguration class
-    #look for enabled adapter only
-    Get-CimInstance Win32_NetworkAdapterConfiguration -filter "IPEnabled = 'True'" |
-    #create an object and have it display Description, Index, IPAddress, SubnetMask, DNSDomain and DNS Server in table
-    Select-Object Description, Index, IPAddress, SubnetMask, DNSDomain, DNSServerSearchOrder | Format-Table
-}
 
 #create a system information report about the current system in functions
 
@@ -93,8 +51,41 @@ function networkInfo {
 
 function gpuInfo { 
     #create a report for videocard vendor, description, screen resolution in horizontal and vertical pixels (win32_videocontroller)
+
     $videoInfo = Get-CIMInstance Win32_VideoController
     $videoInfo | Format-Table Name, Description, CurrentHorizontalResolution , CurrentVerticalResolution
 }
 
-welcome
+"System Information Report"
+"========================="
+
+"Hardware Description"
+"--------------------"
+hardwareDescription
+
+
+"Operating System"
+"----------------"
+operatingSys
+
+
+"CPU Information"
+"---------------"
+cpuInfo
+
+"RAM Information"
+"---------------"
+ramInfo
+
+"Disk Information"
+"---------------"
+diskInfo
+
+#use adapters.ps1 to get the network adapter information
+"Network Information"
+"---------------"
+networkInfo
+
+"Video Information"
+"---------------"
+gpuInfo
