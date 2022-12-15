@@ -1,10 +1,25 @@
 
 #create a system information report about the current system
-$hardWdescription = Get-CIMInstance Win32_ComputerSystem
-$hardWdescription | Format-List *
+"System Information Report"
+"========================="
 
+"Hardware Description"
+"--------------------"
+$hardWdescription = Get-CIMInstance Win32_ComputerSystem
+$hardWdescription | Format-Table *
+
+"Operating System"
+"----------------"
 #create information about operating system name, version number (win32_operatingsystem)
 $operatingSystem = Get-CIMInstance Win32_OperatingSystem
+$operatingSystem | Format-Table *
+
+"CPU Information"
+"---------------"
+#create information about Processor description with speed, number of cores, and sizes of L1, L2, and L3 caches if they are present (win32_processor)
+$cpuInfo = Get-CIMInstance Win32_Processor
+#user Format-Table to output the information in a table
+$cpuInfo | Format-Table *
 
 #create information summary of RAM installed with vendor, description, size, and bank and slot for each RAM module
 $ramInfo = Get-CIMInstance Win32_PhysicalMemory
